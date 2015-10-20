@@ -789,23 +789,18 @@ int mad(int16_t *samples, int len, int step)
 }
 
 int rms(int16_t *samples, int len, int step)
-/* largely lifted from rtl_power */
+/* edits to correctly calculate rms power based on i and q data */
 {
 	int i;
-	long p, t, s;
-	double dc, err;
+	long r, j, rms;
 
-	p = t = 0L;
-	for (i=0; i<len; i+=step) {
-		s = (long)samples[i];
-		t += s;
-		p += s * s;
+    rms = 0;
+    for (i=0; i<len; i+=2) {
+		r = (long)samples[i];
+        j = (long)samples[i++];
+        rms += sqrt((r*r)+(j*j));
 	}
-	/* correct for dc offset in squares */
-	dc = (double)(t*step) / (double)len;
-	err = t * 2 * dc - dc * dc * len;
-
-	return (int)sqrt((p-err) / len);
+    return rms/len;
 }
 
 int squelch_to_rms(int db, struct dongle_state *dongle, struct demod_state *demod)
