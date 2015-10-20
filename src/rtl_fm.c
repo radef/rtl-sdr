@@ -1241,7 +1241,7 @@ static void *controller_thread_fn(void *arg)
 
 	/* set up primary channel */
 	optimal_settings(s->freqs[0], demod.rate_in);
-	demod.squelch_level = squelch_to_rms(demod.squelch_level, &dongle, &demod);
+	/*demod.squelch_level = squelch_to_rms(demod.squelch_level, &dongle, &demod);*/
 	if (dongle.direct_sampling) {
 		verbose_direct_sampling(dongle.dev, dongle.direct_sampling);}
 	if (dongle.offset_tuning) {
